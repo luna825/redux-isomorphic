@@ -21,13 +21,13 @@ class App extends Component {
     }
 
     render(){
-        const {layout,counter} = this.props;
+        const {layout,counter,todos} = this.props;
         const layoutClass = classNames('wrapper',{'open':layout.siderbarOpen})
         return(
             <div className={layoutClass}>
                 <Siderbar layout={layout} />
                 <div className="wrap">
-                    <Header counter={counter} />
+                    <Header counter={counter} todos={todos} />
                     <div className="container content">
                         {!this.props.children && <Home />}
                         {this.props.children}
@@ -43,7 +43,8 @@ function mapStateToProps(state) {
   return {
     layout : state.layout,
     user:state.user,
-    counter:state.counter
+    counter:state.counter,
+    todos:state.todos
   };
 }
 
