@@ -5,6 +5,7 @@ import App from './common/containers/App'
 //Redux smart
 import Counter from './common/containers/CounterPage'
 import Todo from './common/containers/TodoPage'
+import Reddit from './common/containers/RedditPage'
 
 //Redux Dumb
 import HomePage from "./common/component/Home";
@@ -19,6 +20,7 @@ export default (
         <Route path="counter" component={Counter} />
         <Route path="about" component={About} />
         <Route path="todo" component={Todo} />
+        <Route path="reddit" component={Reddit} />
         <Route path="*" component={Error404}/>
     </Route>
 );

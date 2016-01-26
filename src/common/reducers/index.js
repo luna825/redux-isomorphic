@@ -6,12 +6,15 @@ import layout from './layout'
 import user from './user';
 import counter from './counter'
 import todos from './todo'
+import {selectedReddit,postsByReddit} from './reddit'
 
 const rootReducer = combineReducers({
     layout:layout,
     router:routeReducer,
     user:user,
     counter:counter,
-    todos:todos
+    todos:todos,
+    selectedReddit:selectedReddit,
+    postsByReddit:postsByReddit
 })
 export default rootReducer;

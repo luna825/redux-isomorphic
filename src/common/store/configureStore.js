@@ -5,11 +5,12 @@ import rootReducer from '../reducers';
 import Devtools from '../containers/devtools';
 import { syncHistory } from 'redux-simple-router'
 import { browserHistory } from 'react-router'
+import promiseMiddleware from '../api/promiseMiddleware';
 
 const reduxRouterMiddleware = syncHistory(browserHistory)
 
 const finalCreateStore = compose(
-  applyMiddleware(thunk,reduxRouterMiddleware),
+  applyMiddleware(thunk,reduxRouterMiddleware,promiseMiddleware),
   Devtools.instrument(),
   persistState(
     window.location.href.match(
