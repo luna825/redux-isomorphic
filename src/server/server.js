@@ -9,9 +9,9 @@ import React from 'react'
 import { Provider } from 'react-redux';
 import { RoutingContext, match } from 'react-router';
 
-// import configureStore from '../common/store/configureStore';
+import configureStore from '../common/store/configureStore';
 import { getUser } from '../common/api/user';
-// import routes from '../routes';
+import routes from '../routes';
 import packagejson from '../../package.json';
 
 const app = express()
@@ -34,13 +34,16 @@ const renderFullPage = (html, initialState) => {
     </html>
   `;
 }
-const compiler = webpack(config)
-
-app.use(webpackMiddleware(compiler,{
-    noInfo:true,
-    publicPath:config.output.publicPath
-}))
-app.use(webpackHotMiddleware(compiler))
+if (process.env.NODE_ENV !== 'production'){
+    const compiler = webpack(config)
+    app.use(webpackMiddleware(compiler,{
+        noInfo:true,
+        publicPath:config.output.publicPath
+    }))
+    app.use(webpackHotMiddleware(compiler)) 
+}else{
+    app.use('/static',express.static(__dirname+'/../../bundle'))
+}
 
 app.get('*', function response(req, res) {  
   res.sendFile(path.join(__dirname, '../../bundle/index.html'));

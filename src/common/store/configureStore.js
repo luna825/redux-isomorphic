@@ -11,12 +11,12 @@ const reduxRouterMiddleware = syncHistory(browserHistory)
 
 const finalCreateStore = compose(
   applyMiddleware(thunk,reduxRouterMiddleware,promiseMiddleware),
-  Devtools.instrument(),
-  persistState(
-    window.location.href.match(
-      /[?&]debug_session=([^&]+)\b/
-    )
-  )
+  Devtools.instrument()
+  // persistState(
+  //   window.location.href.match(
+  //     /[?&]debug_session=([^&]+)\b/
+  //   )
+  // )
 )(createStore);
 
 export default function configureStore(initialState) {

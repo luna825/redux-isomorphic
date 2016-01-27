@@ -43,6 +43,11 @@ if (process.env.NODE_ENV === 'production'){
 }else{
     webpackConfig = merge(webpackConfig,{
         devtool:'inline-source-map',
+        entry:[
+            'webpack/hot/dev-server' , 
+            'webpack-hot-middleware/client', 
+            './src/index.js'
+        ],
         devServer:{
             contentBase:'bundle'
         },
@@ -63,14 +68,22 @@ if (process.env.NODE_ENV === 'production'){
             ]
         },
         plugins: [
-            new webpack.HotModuleReplacementPlugin(),
-        ],
-        entry:[
-            'webpack/hot/dev-server' , 
-            'webpack-hot-middleware/client', 
-            './src/index.js'
+            new webpack.HotModuleReplacementPlugin()
         ]
     })
 }
+
+if (process.env.HOT) {
+  webpackConfig.module.loaders[0].query.plugins.push('react-transform');
+  webpackConfig.module.loaders[0].query.extra = {
+    'react-transform': [{
+      target: 'react-transform-hmr',
+      imports: ['react'],
+      locals: ['module']
+    }]
+  };
+}
+
+
 
 module.exports = webpackConfig;
