@@ -12,8 +12,6 @@ import HomePage from "./common/component/Home";
 import About from "./common/component/About";
 import Error404 from "./common/component/404";
 
-
-
 export default (
     <Route name="app" path="/" component={App}>
         <Route path="home" component={HomePage} />

@@ -234,7 +234,7 @@
 }
 
 .todocontainer .todo-list li .edit {
-    display: block;
+    display: none;
 }
 
 .todocontainer .todo-list li.editing:last-child {

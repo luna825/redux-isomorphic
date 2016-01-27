@@ -1,5 +1,6 @@
 import React,{Component,PropTypes} from 'react'
 import TextInput from './TextInput'
+import classnames from 'classnames'
 
 export default class Item extends Component{
 
@@ -32,7 +33,7 @@ export default class Item extends Component{
             />)
         }else{
             element=(
-                <div >
+                <div className="view">
                     <input className="toggle" type="checkbox" checked={todo.completed} onChange={()=>completeTodo(todo.id)} />
                     <label onDoubleClick={(e)=>this.handleDoubleClick(e)}>{todo.text}</label>
                     <button className="destroy" onClick={() => deleteTodo(todo.id)}></button>
@@ -41,7 +42,7 @@ export default class Item extends Component{
         }
 
         return (
-            <li >
+            <li className={classnames({completed: todo.completed,editing: this.state.editing})}>
                 {element}
             </li>
         )
