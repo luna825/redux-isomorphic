@@ -10,7 +10,7 @@ import promiseMiddleware from '../api/promiseMiddleware';
 const reduxRouterMiddleware = syncHistory(browserHistory)
 
 const finalCreateStore = compose(
-  applyMiddleware(thunk,reduxRouterMiddleware,promiseMiddleware),
+  applyMiddleware(thunk,promiseMiddleware),
   Devtools.instrument()
   // persistState(
   //   window.location.href.match(

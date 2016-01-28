@@ -10,8 +10,8 @@ import Devtools from './common/containers/devtools'
 
 import { syncHistory, routeReducer } from 'redux-simple-router'
 
-
-const store = configureStore()
+const initState = window.__INITIAL_STATE__
+const store = configureStore(initState)
 
 ReactDOM.render(
     <Provider store={store}>

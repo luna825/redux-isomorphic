@@ -6,8 +6,10 @@ var webpackMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware =require('webpack-hot-middleware');
 
 import React from 'react'
+import {renderToString} from 'react-dom/server'
 import { Provider } from 'react-redux';
-import { RoutingContext, match } from 'react-router';
+import { RouterContext, match } from 'react-router';
+import Devtools from '../common/containers/devtools'
 
 import configureStore from '../common/store/configureStore';
 import { getUser } from '../common/api/user';
@@ -22,14 +24,14 @@ const renderFullPage = (html, initialState) => {
       <head>
         <meta charset="utf-8">
         <title>Isomorphic Redux Example</title>
-        <link rel="stylesheet" type="text/css" href="/static/app.css">
+        <link rel="stylesheet" type="text/css" href="/bundle/app.css">
       </head>
       <body>
-        <div id="root">${html}</div>
+        <div id="app">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}; 
         </script>
-        <script src="/static/bundle.js"></script>
+        <script src="/bundle/bundle.js"></script>
       </body>
     </html>
   `;
@@ -45,8 +47,32 @@ if (process.env.NODE_ENV !== 'production'){
     app.use('/static',express.static(__dirname+'/../../bundle'))
 }
 
-app.get('*', function response(req, res) {  
-  res.sendFile(path.join(__dirname, '../../bundle/index.html'));
+app.get('*', function response(req, res) { 
+  
+    getUser(user =>{
+        if (!user) { return res.status(401).end('Not Authorised')}
+    
+        match({routes,location:req.url},(error,redirectLoaction,renderProps) =>{
+            if (error){
+                res.status(500).send('Internal server error');
+            }else if(redirectLoaction){
+                res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+            }else if(renderProps){
+                const store = configureStore({user : user, version : packagejson.version});
+                const state = store.getState()
+                const html = renderToString(
+                  <Provider store={store}>         
+                    <RouterContext {...renderProps} />
+                  </Provider>
+                )
+                res.status(200).send(renderFullPage(html,state))
+            }else{
+                res.status(404).send('Not found')
+            }
+        })
+
+    }) 
+  // res.sendFile(path.join(__dirname, '../../bundle/index.html'));
 });
 
 
